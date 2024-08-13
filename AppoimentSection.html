@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointments</title>
+    <style>
+     body {
+    background-color: aliceblue;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container for header elements */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f0f8ff; /* Light background color for header */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adding shadow for header */
+}
+
+/* Style for search container */
+.search-container {
+    text-align: left;
+}
+
+#OurDoctors {
+    background-image: url(./images/ba.jpg);
+}
+
+.search-container input {
+    padding: 10px;
+    width: 100%; /* Full width on smaller screens */
+    max-width: 300px; /* Maximum width */
+    font-size: 16px;
+    border-radius: 25px; /* Rounded corners */
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    outline: none;
+    transition: all 0.3s ease; /* Smooth transition */
+}
+
+.search-container input:focus {
+    border-color: #007bff; /* Blue border on focus */
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); /* Blue glow on focus */
+}
+
+/* Style for home button */
+.home-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 25px; /* Rounded corners */
+    background: linear-gradient(45deg, #007bff, #00c6ff); /* Gradient background */
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    text-transform: uppercase; /* Uppercase text */
+    font-weight: bold; /* Bold text */
+    transition: all 0.3s ease; /* Smooth transition */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for button */
+}
+
+.home-button:hover {
+    background: linear-gradient(45deg, #0056b3, #0099ff); /* Darker gradient on hover */
+    transform: scale(1.05); /* Slightly larger on hover */
+}
+
+.home-button:active {
+    transform: scale(1); /* Reset size on click */
+}
+
+/* Container styling for doctors */
+.main-inner-doctor {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    grid-template-rows: repeat(2, auto); /* 2 rows */
+    gap: 20px;
+    justify-items: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.doc-poster {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 200px;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 10px;
+    background-color: lightblue;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.doc-poster:hover {
+    transform: translateY(-10px);
+}
+
+.doc-icons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.doc-icons i {
+    margin: 0 5px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.doc-icons i:hover {
+    color: #007bff;
+}
+
+.doc-details {
+    margin-top: 10px;
+}
+
+.favorite {
+    color: red;
+}
+
+.doc-poster img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+/* Title styling */
+.doctors-heading h2 {
+    text-align: center;
+    font-size: 3em;
+    margin-bottom: 20px;
+    color: #007bff;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 1200px) {
+    .main-inner-doctor {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .main-inner-doctor {
+        grid-template-columns: 1fr; /* 1 column on smaller screens */
+        grid-template-rows: auto; /* Auto rows to stack items */
+    }
+
+    .search-container input {
+        width: 100%; /* Full width */
+        max-width: none; /* Remove max-width */
+    }
+}
+
+@media (max-width: 480px) {
+    .home-button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .doc-poster {
+        max-width: 150px; /* Smaller max-width for doc posters */
+    }
+
+    .doctors-heading h2 {
+        font-size: 2em; /* Smaller font-size for titles */
+    }
+}
+
+
+    </style>
+    <!-- Include Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="home-button">Home</a>
+        <div class="search-container">
+            <input type="text" id="searchBox" placeholder="Search for a doctor by name" onkeyup="searchDoctors()">
+        </div>
+    </div>
+
+    <div id="OurDoctors">
+        <div class="main-doctors">
+            <div class="doctors-heading">
+                <h2>Our Doctors</h2>
+            </div>
+
+            <div class="main-inner-doctor" id="doctorContainer">
+                <!-- Doctor 1 -->
+                <div class="doc-poster" data-doctor="Mr Joe 1">
+                    <div class="doc-icons">
+                        <i class="fa-solid fa-share" onclick="shareDoctor(event)"></i>
+                        <i class="fa-solid fa-eye" onclick="viewDoctorInfo(event)"></i>
+                        <i class="fa-solid fa-heart" onclick="toggleFavorite(event)"></i>
+                    </div>
+                    <img src="images/team1.jpg" alt="Doctor 1">
+                    <div class="doc-details">
+                        <h2>Mr Joe 1</h2>
+                        <i class="fa-brands fa-linkedin"></i>
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                </div>
+
+                <!-- Doctor 2 -->
+                <div class="doc-poster" data-doctor="Mr Joe 2">
+                    <div class="doc-icons">
+                        <i class="fa-solid fa-share" onclick="shareDoctor(event)"></i>
+                        <i class="fa-solid fa-eye" onclick="viewDoctorInfo(event)"></i>
+                        <i class="fa-solid fa-heart" onclick="toggleFavorite(event)"></i>
+                    </div>
+                    <img src="images/team2.jpg" alt="mr joe 3">
+                    <div class="doc-details">
+                        <h2>Hitesh</h2>
+                        <i class="fa-brands fa-linkedin"></i>
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                </div>
+
+                <!-- Doctor 3 -->
+                <div class="doc-poster" data-doctor="Mr Joe 3">
+                    <div class="doc-icons">
+                        <i class="fa-solid fa-share" onclick="shareDoctor(event)"></i>
+                        <i class="fa-solid fa-eye" onclick="viewDoctorInfo(event)"></i>
+                        <i class="fa-solid fa-heart" onclick="toggleFavorite(event)"></i>
+                    </div>
+                    <img src="images/team3.jpg" alt="Doctor 3">
+                    <div class="doc-details">
+                        <h2>Sagar bhai</h2>
+                        <i class="fa-brands fa-linkedin"></i>
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                </div>
+
+                <!-- Doctor 4 -->
+                <div class="doc-poster" data-doctor="Mr Joe 4">
+                    <div class="doc-icons">
+                        <i class="fa-solid fa-share" onclick="shareDoctor(event)"></i>
+                        <i class="fa-solid fa-eye" onclick="viewDoctorInfo(event)"></i>
+                        <i class="fa-solid fa-heart" onclick="toggleFavorite(event)"></i>
+                    </div>
+                    <img src="images/team4.jpg" alt="Doctor 4">
+                    <div class="doc-details">
+                        <h2>Mr Joe 4</h2>
+                        <i class="fa-brands fa-linkedin"></i>
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                </div>
+
+                <!-- Doctor 5 -->
+                <div class="doc-poster" data-doctor="Mr Joe 5">
+                    <div class="doc-icons">
+                        <i class="fa-solid fa-share" onclick="shareDoctor(event)"></i>
+                        <i class="fa-solid fa-eye" onclick="viewDoctorInfo(event)"></i>
+                        <i class="fa-solid fa-heart" onclick="toggleFavorite(event)"></i>
+                    </div>
+                    <img src="images/team5.jpg" alt="Doctor 5">
+                    <div class="doc-details">
+                        <h2>vaibhav</h2>
+                        <i class="fa-brands fa-linkedin"></i>
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                </div>
+
+                <!-- Doctor 6 -->
+                <div class="doc-poster" data-doctor="Mr Joe 6">
+                    <div class="doc-icons">
+                        <i class="fa-solid fa-share" onclick="shareDoctor(event)"></i>
+                        <i class="fa-solid fa-eye" onclick="viewDoctorInfo(event)"></i>
+                        <i class="fa-solid fa-heart" onclick="toggleFavorite(event)"></i>
+                    </div>
+                    <img src="images/team6.jpg" alt="Doctor 6">
+                    <div class="doc-details">
+                        <h2>nirav</h2>
+                        <i class="fa-brands fa-linkedin"></i>
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function viewDoctorInfo(event) {
+            const doctorElement = event.currentTarget.closest('.doc-poster');
+            const doctorName = doctorElement.getAttribute('data-doctor');
+            alert(`Viewing information for ${doctorName}`);
+            // Here you could show a modal or navigate to a page with more info
+        }
+
+        function shareDoctor(event) {
+            const doctorElement = event.currentTarget.closest('.doc-poster');
+            const doctorName = doctorElement.getAttribute('data-doctor');
+            alert(`Sharing information of ${doctorName}`);
+            // Here you could implement sharing functionality, like using the Web Share API
+        }
+
+        function toggleFavorite(event) {
+            const doctorElement = event.currentTarget.closest('.doc-poster');
+            const heartIcon = event.currentTarget;
+            const doctorName = doctorElement.getAttribute('data-doctor');
+            heartIcon.classList.toggle('favorite');
+            const isFavorite = heartIcon.classList.contains('favorite');
+            alert(`${doctorName} has been ${isFavorite ? 'added to' : 'removed from'} favorites`);
+            // You can also save this favorite state to localStorage or a database
+        }
+
+        function searchDoctors() {
+    const query = document.getElementById('searchBox').value.toLowerCase();
+    const doctors = document.querySelectorAll('.doc-poster');
+    
+    doctors.forEach(doctor => {
+        const doctorName = doctor.querySelector('h2').textContent.toLowerCase();
+        if (doctorName.includes(query)) {
+            doctor.style.display = '';
+        } else {
+            doctor.style.display = 'none';
+        }
+    });
+}
+
+    </script>
+</body>
+</html>
